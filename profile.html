@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Create a demo student profile, sign in, and manage your saved Study Circle workshops stored in localStorage.">
+  <meta name="theme-color" content="#0c2745">
+  <title>Student Profile &amp; Saved Plan | Study Circle</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="assets/vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="assets/vendor/jquery-3.6.1.min.js" defer></script>
+  <script src="assets/vendor/bootstrap.bundle.min.js" defer></script>
+  <script src="js/data.js" defer></script>
+  <script src="js/storage.js" defer></script>
+  <script src="js/profile.js" defer></script>
+</head>
+<body id="top">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <nav class="navbar navbar-expand-lg" aria-label="Main navigation">
+      <div class="container">
+        <a class="navbar-brand" href="index.html" aria-label="Study Circle home">
+          <span class="brand-symbol" aria-hidden="true">&lt;/&gt;</span>
+          <span>Study Circle<span class="brand-dot">.</span></span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="workshops.html">Workshops <span class="nav-plan-badge nav-plan-count" title="Saved workshops in plan">0</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="workshops.html#schedule">Schedule</a></li>
+            <li class="nav-item"><a class="nav-link" href="index.html#about">About</a></li>
+            <li class="nav-item"><a class="nav-link active" aria-current="page" id="nav-auth-link" href="profile.html">Sign In / Profile</a></li>
+            <li class="nav-item">
+              <button type="button" class="theme-toggle-btn" id="theme-toggle" aria-pressed="false" aria-label="Toggle dark or light mode">
+                <span aria-hidden="true">☾</span> Dark
+              </button>
+            </li>
+            <li class="nav-item"><a class="nav-link nav-join" href="workshops.html#join">Join the circle</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <main id="main-content">
+    <section class="page-heading" aria-labelledby="profile-page-title">
+      <div class="container">
+        <span class="page-index" aria-hidden="true">STUDY CIRCLE / 03</span>
+        <p class="eyebrow">Member Dashboard &amp; Saved Data</p>
+        <h1 id="profile-page-title">Your learning profile.</h1>
+        <p class="lead-copy">Sign up or sign in to personalize your club dashboard, and review the workshops saved from the Workshops page.</p>
+      </div>
+    </section>
+
+    <!-- Demo Account Sign Up & Log In Section (Shown when logged out) -->
+    <section class="section-tight" id="auth-section" aria-label="Student Sign Up and Log In">
+      <div class="container">
+        <div class="demo-note mb-4">
+          <strong>Demo Account Notice:</strong> All account credentials and saved items are stored locally in your browser via <code>localStorage</code> (JSON). Do not use real passwords.
+        </div>
+        <div class="row g-4">
+          <!-- Sign Up Card -->
+          <div class="col-lg-6">
+            <div class="auth-card h-100">
+              <p class="eyebrow">New to the circle?</p>
+              <h2>Create a demo account</h2>
+              <p class="small-note mb-4">Register your student profile to save your track and view your personalized dashboard.</p>
+              <form id="signup-form" novalidate>
+                <div class="mb-3">
+                  <label class="form-label" for="signup-name">Full name *</label>
+                  <input class="form-control" type="text" id="signup-name" placeholder="e.g. Khalid Ahmad" required>
+                  <p class="field-error" id="signup-name-error"></p>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="signup-email">Student email *</label>
+                  <input class="form-control" type="email" id="signup-email" placeholder="khalid@astanait.edu.kz" required>
+                  <p class="field-error" id="signup-email-error"></p>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="signup-track">Primary interest track</label>
+                  <select class="form-select" id="signup-track">
+                    <option value="Web Development">Web Development (HTML/CSS/JS)</option>
+                    <option value="Programming & Logic">Programming &amp; Logic</option>
+                    <option value="UI/UX Interface Design">UI/UX Interface Design</option>
+                    <option value="Git & Developer Tools">Git &amp; Developer Tools</option>
+                  </select>
+                </div>
+                <div class="mb-4">
+                  <label class="form-label" for="signup-password">Demo passcode * <span class="fw-normal">(min 4 chars, not a real password)</span></label>
+                  <input class="form-control" type="password" id="signup-password" placeholder="e.g. demo1234" required>
+                  <p class="field-error" id="signup-password-error"></p>
+                </div>
+                <button class="btn btn-ink w-100" type="submit">Create Profile &amp; Sign In ↗</button>
+                <p class="small-note text-success mt-3 mb-0" id="signup-status" hidden></p>
+              </form>
+            </div>
+          </div>
+
+          <!-- Log In Card -->
+          <div class="col-lg-6">
+            <div class="auth-card h-100">
+              <p class="eyebrow">Already registered?</p>
+              <h2>Sign in to your profile</h2>
+              <p class="small-note mb-4">Enter the email and demo passcode you registered on this browser.</p>
+              <form id="login-form" novalidate>
+                <div class="mb-3">
+                  <label class="form-label" for="login-email">Registered email *</label>
+                  <input class="form-control" type="email" id="login-email" placeholder="khalid@astanait.edu.kz" required>
+                  <p class="field-error" id="login-email-error"></p>
+                </div>
+                <div class="mb-4">
+                  <label class="form-label" for="login-password">Demo passcode *</label>
+                  <input class="form-control" type="password" id="login-password" placeholder="Enter demo passcode" required>
+                  <p class="field-error" id="login-password-error"></p>
+                </div>
+                <p class="field-error mb-3" id="login-general-error"></p>
+                <button class="btn btn-accent w-100" type="submit">Sign In to Dashboard ↗</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Logged-In Profile Header (Shown when logged in) -->
+    <section class="section-tight" id="profile-section" hidden aria-label="Active Student Profile">
+      <div class="container">
+        <div class="profile-card">
+          <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <div class="d-flex align-items-center gap-3">
+              <div class="profile-avatar" id="profile-avatar" aria-hidden="true">KA</div>
+              <div>
+                <p class="eyebrow mb-1">Active Member Session</p>
+                <h2 class="h3 mb-1" id="profile-name">Student Name</h2>
+                <p class="small-note mb-0" id="profile-email">student@example.com</p>
+                <p class="small-note fw-bold mt-1 mb-0" id="profile-track">Focus Track: Web Development</p>
+              </div>
+            </div>
+            <button type="button" class="btn btn-outline-ink" id="logout-btn">Log Out</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Saved Workshops / Learning Plan (Works both logged-in and logged-out, even when localStorage is empty) -->
+    <section class="section section-white" aria-labelledby="saved-plan-heading">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Cross-Page Saved Data (JSON)</p>
+            <h2 id="saved-plan-heading">Your saved workshops</h2>
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-accent btn-sm" href="workshops.html">+ Add more workshops</a>
+            <button type="button" class="btn btn-outline-ink btn-sm" id="profile-clear-plan">Clear all</button>
+          </div>
+        </div>
+
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-md-4">
+            <div class="stat-tile">
+              <strong id="profile-stat-count">0</strong>
+              <span>Saved workshops</span>
+            </div>
+          </div>
+          <div class="col-6 col-md-4">
+            <div class="stat-tile">
+              <strong id="profile-stat-minutes">0 min</strong>
+              <span>Total calculated practice time</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="profile-plan-list"></div>
+
+        <div class="empty-state" id="profile-plan-empty">
+          <strong>Your learning plan is currently empty.</strong>
+          <p class="mb-2 mt-1">Visit the Workshops page and click “Add to plan” on any session—your choices will appear here automatically and persist across page reloads.</p>
+          <a class="text-link" href="workshops.html">Browse workshops now ↗</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-5">
+          <a class="navbar-brand mb-3" href="index.html" aria-label="Study Circle home">
+            <span class="brand-symbol" aria-hidden="true">&lt;/&gt;</span>
+            <span>Study Circle<span class="brand-dot">.</span></span>
+          </a>
+          <p class="mb-0">A little practice. A little support. A lot of possibility.</p>
+        </div>
+        <div class="col-lg-7">
+          <nav class="footer-links" aria-label="Footer navigation">
+            <a href="index.html">Home</a>
+            <a href="workshops.html">Workshops</a>
+            <a href="workshops.html#schedule">Schedule</a>
+            <a href="index.html#about">About</a>
+            <a href="profile.html">Profile &amp; Saved Plan</a>
+            <a href="CREDITS.md">Credits</a>
+          </nav>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>Study Circle · Final Release · Khalid Ahmad Ahmadi (Group IT-2511)</p>
+        <a href="#top">Back to top ↑</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

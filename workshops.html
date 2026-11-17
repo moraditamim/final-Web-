@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Browse Study Circle workshops, build a saved learning plan, view a sample timetable, and try the validated signup form.">
+  <meta name="theme-color" content="#0c2745">
+  <title>Workshops &amp; Join | Study Circle</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="assets/vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="assets/vendor/jquery-3.6.1.min.js" defer></script>
+  <script src="assets/vendor/bootstrap.bundle.min.js" defer></script>
+  <script src="js/data.js" defer></script>
+  <script src="js/storage.js" defer></script>
+  <script src="js/main.js" defer></script>
+</head>
+<body id="top">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <nav class="navbar navbar-expand-lg" aria-label="Main navigation">
+      <div class="container">
+        <a class="navbar-brand" href="index.html" aria-label="Study Circle home">
+          <span class="brand-symbol" aria-hidden="true">&lt;/&gt;</span>
+          <span>Study Circle<span class="brand-dot">.</span></span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link active" aria-current="page" href="workshops.html">Workshops <span class="nav-plan-badge nav-plan-count" title="Saved workshops in plan">0</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="workshops.html#schedule">Schedule</a></li>
+            <li class="nav-item"><a class="nav-link" href="index.html#about">About</a></li>
+            <li class="nav-item"><a class="nav-link" id="nav-auth-link" href="profile.html">Sign In / Profile</a></li>
+            <li class="nav-item">
+              <button type="button" class="theme-toggle-btn" id="theme-toggle" aria-pressed="false" aria-label="Toggle dark or light mode">
+                <span aria-hidden="true">☾</span> Dark
+              </button>
+            </li>
+            <li class="nav-item"><a class="nav-link nav-join" href="workshops.html#join">Join the circle</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <main id="main-content">
+    <section class="page-heading" aria-labelledby="page-title">
+      <div class="container">
+        <span class="page-index" aria-hidden="true">STUDY CIRCLE / 02</span>
+        <p class="eyebrow">Workshops &amp; Join</p>
+        <h1 id="page-title">One workshop.<br>One small win.</h1>
+        <p class="lead-copy">Filter beginner-friendly topics, save sessions to your personal learning plan, check the sample timetable, and try the signup form.</p>
+      </div>
+    </section>
+
+    <section class="section-tight" aria-labelledby="workshop-list-title">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Choose your starting point</p>
+            <h2 id="workshop-list-title">Practical coding workshops.</h2>
+          </div>
+          <a class="text-link" href="profile.html">View saved plan on Profile ↗</a>
+        </div>
+
+        <div class="workshop-tools" aria-label="Workshop search and filters">
+          <div class="row g-3 align-items-end">
+            <div class="col-12 col-md-5">
+              <label class="form-label" for="workshop-search">Search workshops</label>
+              <input class="form-control" id="workshop-search" type="search" placeholder="Try HTML, Git, jQuery or design" autocomplete="off">
+            </div>
+            <div class="col-6 col-md-3">
+              <label class="form-label" for="category-filter">Category</label>
+              <select class="form-select" id="category-filter">
+                <option value="all">All topics</option>
+                <option value="Web">Web development</option>
+                <option value="Programming">Programming</option>
+                <option value="Design">Design</option>
+                <option value="Tools">Tools &amp; workflow</option>
+              </select>
+            </div>
+            <div class="col-6 col-md-4">
+              <label class="form-label" for="workshop-sort">Sort by</label>
+              <select class="form-select" id="workshop-sort">
+                <option value="featured">Featured first</option>
+                <option value="duration-asc">Shortest first</option>
+                <option value="duration-desc">Longest first</option>
+                <option value="title">Name A–Z</option>
+              </select>
+            </div>
+          </div>
+          <p class="small-note mt-3 mb-0" id="workshop-count" aria-live="polite">Loading workshops…</p>
+        </div>
+
+        <div class="row g-4 mt-1" id="workshop-list" aria-live="polite"></div>
+        <p class="empty-state" id="workshop-empty" hidden>No workshops match that search. Try another keyword or choose “All topics”.</p>
+
+        <section class="booking-summary mt-4" id="plan-summary-bar" aria-labelledby="plan-title">
+          <div>
+            <p class="eyebrow mb-1">Saved to your browser (localStorage)</p>
+            <h3 id="plan-title">Your learning plan</h3>
+            <p class="small-note mb-0">Workshops you add stay saved across reloads and appear on your Profile page.</p>
+          </div>
+          <div class="booking-total">
+            <strong id="plan-count">0 workshops</strong>
+            <span id="plan-minutes">0 minutes total</span>
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-accent" href="profile.html">Manage on Profile</a>
+            <button class="btn btn-outline-light" id="clear-plan" type="button">Clear plan</button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="section section-white" id="schedule" aria-labelledby="schedule-title">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Plan your practice</p>
+            <h2 id="schedule-title">A little progress, every week.</h2>
+          </div>
+        </div>
+        <p class="demo-note mb-4">Example weekly programme (Astana time, UTC+5). Click any workshop title to jump straight to its card above.</p>
+        <div class="row g-4 g-lg-5">
+          <div class="col-lg-8">
+            <div class="schedule-wrap">
+              <table class="schedule-table">
+                <caption>Sample weekly workshop timetable</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">When</th>
+                    <th scope="col">Workshop</th>
+                    <th scope="col">Format</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Mon</strong><small>17:00–18:30</small></td>
+                    <td><a href="#responsive">Your first responsive page</a><small>Beginner · 90 min</small></td>
+                    <td><span class="session-type">Web</span><small>Guided practice</small></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Wed</strong><small>17:00–18:15</small></td>
+                    <td><a href="#problem-solving">Think through the problem</a><small>Beginner · 75 min</small></td>
+                    <td><span class="session-type problem">Programming</span><small>Guided practice</small></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Fri</strong><small>17:00–18:00</small></td>
+                    <td><a href="#first-commit">Make your first commit</a><small>Beginner · 60 min</small></td>
+                    <td><span class="session-type git">Tools</span><small>Guided practice</small></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <aside class="col-lg-4" aria-labelledby="bring-title">
+            <div class="sidebar-panel">
+              <p class="eyebrow">Your first session</p>
+              <h2 class="h3" id="bring-title">Come prepared.<br>Stay curious.</h2>
+              <ul class="mt-4">
+                <li>A laptop with a browser and code editor.</li>
+                <li>Your class notes and one question.</li>
+                <li>A small exercise you have already tried.</li>
+                <li>Willingness to explain your thinking.</li>
+              </ul>
+              <a class="btn btn-accent" href="#join">Register for a session ↗</a>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="join" aria-labelledby="join-title">
+      <div class="container">
+        <div class="row g-5">
+          <div class="col-lg-5">
+            <p class="eyebrow">What to expect</p>
+            <h2 id="join-title">A question is<br>a good starting point.</h2>
+            <p class="lead-copy mt-4">You can be new to coding, new to a topic, or just looking for a little structure.</p>
+            <ol class="step-list">
+              <li>
+                <span class="step-number">01</span>
+                <div>
+                  <strong>Pick a starting point.</strong>
+                  <p>Choose a topic you want to practise and check the suggested starting level.</p>
+                </div>
+              </li>
+              <li>
+                <span class="step-number">02</span>
+                <div>
+                  <strong>Bring one question.</strong>
+                  <p>It can be a concept from class, a layout that breaks, or a step you cannot explain.</p>
+                </div>
+              </li>
+              <li>
+                <span class="step-number">03</span>
+                <div>
+                  <strong>Save to your plan.</strong>
+                  <p>Submitting this form adds your selected workshop to your local learning plan automatically.</p>
+                </div>
+              </li>
+            </ol>
+            <div class="demo-note">Demonstration only. Do not enter real passwords or sensitive personal information.</div>
+          </div>
+
+          <div class="col-lg-7">
+            <form class="join-panel" id="join-form" aria-labelledby="form-title" novalidate>
+              <h2 id="form-title">Find your place in the circle.</h2>
+              <p class="small-note mb-4">Fields marked * are required. Inline errors appear directly beneath invalid fields.</p>
+
+              <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                  <label class="form-label" for="full-name">Your name *</label>
+                  <input class="form-control" type="text" id="full-name" name="full-name" autocomplete="name" required maxlength="80" placeholder="e.g. Khalid Ahmad" aria-describedby="name-error">
+                  <p class="field-error" id="name-error"></p>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="email">Email address *</label>
+                  <input class="form-control" type="email" id="email" name="email" autocomplete="email" required maxlength="120" placeholder="khalid@example.com" aria-describedby="email-error">
+                  <p class="field-error" id="email-error"></p>
+                </div>
+                <div class="col-12">
+                  <label class="form-label" for="phone">Phone number <span class="fw-normal">(optional)</span></label>
+                  <input class="form-control" type="tel" id="phone" name="phone" autocomplete="tel" maxlength="20" placeholder="+7 700 123 45 67" aria-describedby="phone-error">
+                  <p class="field-error" id="phone-error"></p>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label" for="workshop">Choose a workshop *</label>
+                <select class="form-select" id="workshop" name="workshop" required aria-describedby="workshop-error">
+                  <option value="" disabled selected>Select your starting point</option>
+                  <option value="responsive">Your first responsive page</option>
+                  <option value="problem-solving">Think through the problem</option>
+                  <option value="first-commit">Make your first commit</option>
+                  <option value="javascript-basics">JavaScript that responds</option>
+                  <option value="accessible-forms">Forms people can use</option>
+                  <option value="interface-design">Design a clearer interface</option>
+                  <option value="jquery-effects">Small effects with jQuery</option>
+                  <option value="debugging">Debug with confidence</option>
+                </select>
+                <p class="field-error" id="workshop-error"></p>
+              </div>
+
+              <fieldset class="mb-4">
+                <legend class="form-legend">Where are you starting? *</legend>
+                <p class="field-error" id="experience-error"></p>
+                <div class="level-options">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="experience" id="level-new" value="new" required>
+                    <label class="form-check-label" for="level-new">Just getting started</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="experience" id="level-some" value="some">
+                    <label class="form-check-label" for="level-some">I know a few basics</label>
+                  </div>
+                </div>
+              </fieldset>
+
+              <div class="mb-4">
+                <label class="form-label" for="question">One thing you’d like to understand <span class="fw-normal">(optional)</span></label>
+                <textarea class="form-control" id="question" name="question" rows="3" maxlength="500" placeholder="e.g. When should I use Grid instead of Flexbox?" aria-describedby="question-error"></textarea>
+                <p class="field-error" id="question-error"></p>
+              </div>
+
+              <div class="form-check mb-4">
+                <input class="form-check-input" type="checkbox" id="demo-agree" required aria-describedby="agree-error">
+                <label class="form-check-label" for="demo-agree">I understand this is a front-end demonstration and does not send data to a server. *</label>
+                <p class="field-error" id="agree-error"></p>
+              </div>
+
+              <button class="btn btn-ink w-100" type="submit" id="preview-signup">Save &amp; preview signup ↗</button>
+            </form>
+
+            <section class="success-panel" id="join-result" tabindex="-1" aria-labelledby="success-title" hidden>
+              <p class="eyebrow">Signup confirmed</p>
+              <h2 id="success-title">You’re on the list!</h2>
+              <p id="selection-summary"></p>
+              <div class="button-row">
+                <a class="btn btn-ink" href="profile.html">Go to My Profile ↗</a>
+                <button class="btn btn-outline-ink" type="button" id="edit-selection">Register another workshop</button>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-5">
+          <a class="navbar-brand mb-3" href="index.html" aria-label="Study Circle home">
+            <span class="brand-symbol" aria-hidden="true">&lt;/&gt;</span>
+            <span>Study Circle<span class="brand-dot">.</span></span>
+          </a>
+          <p class="mb-0">A little practice. A little support. A lot of possibility.</p>
+        </div>
+        <div class="col-lg-7">
+          <nav class="footer-links" aria-label="Footer navigation">
+            <a href="index.html">Home</a>
+            <a href="workshops.html">Workshops</a>
+            <a href="workshops.html#schedule">Schedule</a>
+            <a href="index.html#about">About</a>
+            <a href="profile.html">Profile &amp; Saved Plan</a>
+            <a href="CREDITS.md">Credits</a>
+          </nav>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>Study Circle · Final Release · Khalid Ahmad Ahmadi (Group IT-2511)</p>
+        <a href="#top">Back to top ↑</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
